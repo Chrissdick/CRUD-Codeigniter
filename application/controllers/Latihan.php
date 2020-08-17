@@ -24,80 +24,72 @@ class Latihan extends CI_Controller {
 	// }
 
 	// fungsi untuk me redirect ke halaman tambah data (create_page)
+
+		//first construct
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->model("m_data_siswa");
+	}
+		//index
+	public function index()
+	{
+		$data['siswa'] = $this->m_data_siswa->get_data('tb_siswa');
+		$this->load->view('index',$data);
+	}
+		//create page redirect
 	public function create_page()
 	{
-		$this->load->view('v_create_page');
+		$this->load->view('create_page');
 	}
 
-	// fungsi untuk menambah data
+		// create function to database
 	public function create()
 	{
-		$this->load->model('m_data_siswa');
-
 		$nama=$this->input->post('siswa');
 		$NISN=$this->input->post('NISN');
+		$nohp=$this->input->post('nohp');
 		$status=$this->input->post('status');
-
 		$data = [
 			'id_siswa' => NULL,
 			'nama_siswa' => $nama,
 			'NISN' => $NISN,
+			'no_hp' => $nohp,
 			'status' => $status
 		];
-
 		$this->m_data_siswa->insert('tb_siswa',$data);
-
 		redirect(base_url('latihan'));
-
-	}
-	// fungsi untuk menampilkan data(read)
-	public function index()
-	{
-		$this->load->model('m_data_siswa');
-
-		$data['siswa'] = $this->m_data_siswa->get_data('tb_siswa');
-
-		$this->load->view('v_CRUD',$data);
 	}
 
-	// menghapus data
+		//delete data
 	public function delete($id)
 	{
-		$this->load->model('m_data_siswa');
-
 		$this->m_data_siswa->delete($id,'id_siswa','tb_siswa');
-
 		redirect(base_url('latihan'));
 	}
 
-	// mengedit data
+		// edit data
 	public function edit($id)
 	{
-		$this->load->model('m_data_siswa');
-
 		$nama=$this->input->post('siswa');
 		$NISN=$this->input->post('NISN');
+		$nohp=$this->input->post('nohp');
 		$status=$this->input->post('status');
-
 		$data= [
 			'nama_siswa' => $nama,
 			'NISN' => $NISN,
+			'no_hp' => $nohp,
 			'status' => $status
 		];
-
 		$this->m_data_siswa->edit('tb_siswa','id_siswa',$data,$id);
-
 		redirect(base_url('latihan'));
 	}
 
-	// redirect edit page
+		// redirect edit page
 	public function edit_page($id)
 	{
-		$this->load->model('m_data_siswa');
-
 		$data['edit'] = $this->m_data_siswa->get_edit('tb_siswa','id_siswa',$id);
-
-		$this->load->view('v_edit_page',$data);
+		$this->load->view('edit_page',$data);
 
 	}
 }
